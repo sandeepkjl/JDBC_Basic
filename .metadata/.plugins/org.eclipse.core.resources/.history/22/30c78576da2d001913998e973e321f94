@@ -1,0 +1,50 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class MainClass {
+
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		
+		UserBean userBean = new UserBean();
+		userBean.setUserId("SA5505");
+		userBean.setPassword("PS5505");
+		userBean.setName("Ayush");
+		userBean.setIncorrectAttempts(0);
+		userBean.setLockStatus(0);
+		userBean.setUserType("Employee");
+		
+		String addStatus = addUser(userBean);
+		
+		System.out.println(addStatus);
+
+	}
+	
+	public static String addUser(UserBean bean) throws ClassNotFoundException, SQLException
+	{
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","sk6785","sho987");
+		
+		String sql = "update userrecord set Password = ? where  UserType=?";
+		
+		
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, newPassword);
+			pstmt.setString(2,"Admin");
+			
+			int result = pstmt.executeUpdate();
+			
+			if(result>0)
+			{
+				return "Changed";
+			}
+			else{
+				return "Failed";
+			}
+			
+	}
+
+}

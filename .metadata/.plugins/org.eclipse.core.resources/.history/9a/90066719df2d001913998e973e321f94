@@ -1,0 +1,54 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class MainClass {
+
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		
+		
+		String[] usersName = getNames();
+		
+		for(int i=0; i<usersName.length; i++)
+		{
+			System.out.println(usersName);
+		}
+		
+		
+	
+
+	}
+	
+	public static String[] getNames() throws ClassNotFoundException, SQLException
+	{
+		
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","sk6785","sho987");
+		
+		String sql = "select Name from userrecord";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		ArrayList<UserBean> userBeans = new ArrayList<UserBean>();
+		
+		while(rs.next())
+		{
+			UserBean userBean = new UserBean();
+			
+			userBean.setName(rs.getString(1));
+			userBeans.add(userBean);
+		}
+		
+			
+			return userBeans.toArray(new String[userBeans.size()]);
+			
+	}
+
+}

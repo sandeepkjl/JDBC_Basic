@@ -1,0 +1,36 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class MainClass
+{
+	public static void main(String args[]) throws ClassNotFoundException, SQLException
+	{
+		String usrId=args[0];
+		String newName = args[1];
+		String changeStatus=changeName(usrId, newName);
+		System.out.println(changeStatus);
+	}
+
+	public static String changeName(String userId, String newName) throws ClassNotFoundException, SQLException
+	{
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","sk6785","sho987");
+		
+		String sql = "update userrecord set Name = ? where userId=?";
+		
+		
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, newName);
+			pstmt.setString(2,userId);
+			
+			return pstmt.execute();
+			
+			
+			
+	}
+}
